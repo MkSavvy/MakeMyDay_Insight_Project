@@ -23,15 +23,13 @@ import pymysql as mdb
 #import MySQLdb
 
 from app import app
-
 from a_Model import urlExtract
-from a_Model import getSimProjects
+
 
 @app.route('/')
 @app.route('/input')
 def diy_input():
-    
-    return render_template("input.html")
+    return render_template("input_before_changes.html")
   
 #@app.route('/output')
 #def cities_output():
@@ -43,17 +41,17 @@ def diy_output():
     projectID = request.args.get('ID')
     db = mdb.connect(user="root", host="localhost", db="instructables",  charset='utf8', unix_socket='/tmp/mysql.sock', port='3307')
    
-    url = "/id/" + urlExtract(projectID) + "/"
-    print "the current url is: " + url
+    pID = "/id/" + urlExtract(projectID) + "/"
+    print "the current url is: " + pID
     with db:
         cur = db.cursor()
     #just select the city from the world_innodb that the user inputs
-        cur.execute("SELECT  title, complexEstimate, id FROM technoFEATURES WHERE url ='%s';" %url )
+        cur.execute("SELECT  title, complexEstimate, id, imgURL FROM techFeatures WHERE url ='%s';" %pID )
         query_results = cur.fetchall()
 
     chosen = []
     for result in query_results:
-        chosen.append(dict(title = result[0], complexity = result[1], rowNum = result[2]) )
+        chosen.append(dict(title = result[0], complexity = result[1], rowNum = result[2], imgURL = result[3]) )
   
     if not chosen:
         return render_template("404.html", ID = "Invalid project, not all projects have the proper format unfortunately. :(")
@@ -70,12 +68,13 @@ def diy_output():
         cur = db.cursor()
         # ignore first
         for ind in indices15[1:]:
-            cur.execute("SELECT  title, complexEstimate, url FROM technoFEATURES WHERE id ='%d';" %(ind+1) )
+            cur.execute("SELECT  title, complexEstimate, url, imgURL FROM techFeatures WHERE id ='%d';" %(ind+1) )
             query_results = cur.fetchall()
             for result in query_results:
                 closests.append(dict(projectTitle = result[0], 
                                      compEst = result[1], 
-                                     url = "www.instructables.com/id/" + str(result[2]) + "/")
+                                     url = "http://www.instructables.com" + str(result[2]),
+                                     imgURL = "http://cdn.instructables.com" + str(result[3]))
                                )
         
  #### add index + 1 from python to "id" of the SQL
@@ -83,24 +82,34 @@ def diy_output():
     simplest = cur_compl #this is the level of simplest
     hardest = cur_compl
     same = cur_compl
+    
     for p in closests:
-        if p["compEst"] < simplest-1:
-            simplest = 0
+        if abs(p["compEst"] - same) < 0.5:
+            simP = p
+            same = 9999
+        elif p["compEst"] < simplest:
             simpleP = p
-        elif p["compEst"] > hardest+1:        
-            hardest = 6
+            simplest = p["compEst"]
+        elif p["compEst"] > hardest:        
             hardP = p
-        elif abs(p["compEst"] - same) < 0.5:
-            simP = p #we found a similar project
-            same = 1000
+            hardest = p["compEst"]
+    if "hardP" not in locals():
+        hardP = dict(projectTitle = "OUPS! No harder projects within most similar instructibles",  compEst = 0.000, 
+                                     url = pID,
+                                     imgURL = "/static/img/warning.jpg")
+    if "simpleP" not in locals():
+        simpleP = dict(projectTitle = "OUPS! No simpler projects within most similar instructibles",  compEst = 0.000, 
+                                     url = pID,
+                                     imgURL = "/static/img/warning.jpg")
     
     # This rounds the levels
-    chosen[0]["complexity"] = round(chosen[0]["complexity"])
-    simpleP["compEst"] = round( hardP["compEst"], 1 )
+    chosen[0]["complexity"] = round(chosen[0]["complexity"],1)
+    simpleP["compEst"] = round( simpleP["compEst"], 1 )
     simP["compEst"] = round( simP["compEst"], 1 )
-    hardP["compEst"] = round( simpleP["compEst"], 1 )
+    hardP["compEst"] = round( hardP["compEst"], 1 )
     
-    return render_template("output.html", chosen = chosen[0], simpleP = simpleP, simP = simP, hardP = hardP)
+    
+    return render_template("output.html", chosen = chosen[0], pID = pID, simpleP = simpleP, simP = simP, hardP = hardP)
 
 
 

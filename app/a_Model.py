@@ -7,7 +7,6 @@ Created on Tue Sep 15 11:52:02 2015
 import re
 import pickle as pkl
 
-
 def urlExtract(url_string = ""):
   pat = re.compile("\/id\/([\w-]+)\/")
   url = re.findall(pat, url_string)
@@ -22,3 +21,5 @@ def getSimProjects(chosen):
         with open("../Data/matchlist.pickle", 'rb') as f:
             bmatch = pkl.load(f)
     return bmatch.iloc[chosen]
+
+

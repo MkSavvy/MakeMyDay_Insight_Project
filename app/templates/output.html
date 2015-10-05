@@ -9,15 +9,22 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>Make my Day</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../static/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../static/css/bootstrap.css" rel="stylesheet">
+    <link href="../static/css/Theme-Squad/bootstrap/css/bootstrap.css" rel="stylesheet">
 
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!-- Fonts -->
+    <link rel="stylesheet" type="text/css" href="../static/css/font-awesome/css/font-awesome.min.css" />
+    <link href="http://www.prepbootstrap.com/Content/css/squad/animate.css" rel="stylesheet" />
+    
+    <!-- Squad theme CSS -->
+    <link href="http://www.prepbootstrap.com/Content/css/squad/style.css" rel="stylesheet">
+	<link href="http://www.prepbootstrap.com/Content/css/squad/default.css" rel="stylesheet">
+      <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
 
@@ -30,99 +37,112 @@
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Make my Day</a>
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="index_before_changes.html">
+                    <h1>Make my Day</h1>
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                  <ul class="nav navbar-nav">
+                    <li class="active"><a href=/">Home</a></li>
+                    <li><a href="#about">About</a></li>
+            		<li><a href="#service">Slides</a></li>      
+                  </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-
-   </nav>
-<br><br> 
+        <!-- /.container -->
+    </nav>
+   
 
 
-    <div class="container">
-      <div class="panel panel-default">
-        <h3>Results for: <i>{{chosen["title"]}}</i></h3>
-        <p class="lead">The relative complexity of the project is {{chosen["complexity"]}}</p>
-      </div>
-
-
-    <div class="row">
-        <div class="col-md-3">
-          <div class="panel panel-default">
-            <div class="panel-heading"><h4><a href = "{{simpleP["url"]}}">Simpler project: {{simpleP["projectTitle"] }}</a>
-                                       </h4>
-                                       This project is level <strong>{{simpleP["compEst"] }}</strong>
-            </div>
-            <div id="result-1" class="panel-body" > 
-            </div>
+ <section id="intro" class="intro"  style="background:url('/static/img/bck50.png') background-size:cover no-repeat top center;">
+    <div class = "row" style = "margin-left: 25px; padding-left: 15px;">
+      <div class = "col-md-5">
+        <div class="panel panel-default">
+          <div class = "panel-heading" style = "max-height: 50px;margins:0 auto">
+            <h4> selected project</h4>
+          </div>
+          <div class = "panel-body">
+            <img alt="The project you chose" style="float:left;width:160px;height:160px;" src= "http://cdn.instructables.com{{chosen['imgURL']}}">
+             <p class = "lead"><a href="http://www.instructables.com{{pID}}?ALLSTEPS"><i>{{chosen["title"]}}</i></a>
+            </p>
+            <p>Complexity <strong>{{chosen["complexity"]}}</strong></p>
+            
           </div>
         </div>
         
-        <div class="col-md-3">
-          <div class="panel panel-default">
-            <div class="panel-heading"><h4><a href = "{{simP["url"]}}">Similar project: {{simP["projectTitle"] }}</a>
-                                       </h4>
-                                       This project is level <strong>{{simP["compEst"] }}</strong>
-            </div>
-            <div id="result-1" class="panel-body" > 
-            </div>
+        <div class="panel panel-default">
+          <div class = "panel-heading" style = "max-height: 40px;">
+            <h4> Try another project </h4>
+          </div>
+          <div class = "panel-body">
+            <form  action="/output" method="GET">
+              <div class="form-group">
+                   <label for="ID"> New project URL: </label>
+                   <input type="text" id="ID" name='ID' placeholder="instructable url ">
+              </div>
+              <div>
+                  <button type="submit" class="btn btn-default btn-lg">GO!</button>
+              </div>
+          </form>
           </div>
         </div>
-        
-        <div class="col-md-3">
-          <div class="panel panel-default">
-            <div class="panel-heading"><h4><a href = "{{hardP["url"]}}">Challenging project: {{hardP["projectTitle"] }}</a>
-                                       </h4>
-                                       This project is level <strong>{{hardP["compEst"] }}</strong>
+      </div>
+      
+      <div class = "col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading" style = "max-height: 40px;">
+                <h4> Simpler project
+                </h4> 
             </div>
-            <div id="result-1" class="panel-body" > 
+          <div class="panel-body" >
+                <img alt=" Simple Project " style="float:left;width:140px;" src= "{{simpleP['imgURL']}}">
+                 <p class = "follow" style = "font-size:18px;"><a href = "{{simpleP['url']}}"><i>{{simpleP["projectTitle"] }}</i></a>
+                </p>
+                <p>Complexity = <strong>{{simpleP["compEst"]}}</strong></p>
             </div>
-          </div>
         </div>
-       
-              
-    </div>
-    </div><!-- /.container -->
-      <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-      <script src="static/js/bootstrap.min.js"></script>
-    
-  <div class="container">
-    <div class="starter-template">
-        <h2>Success! The project you seek was analyzed and results are shown below.</h2>
-        <p>Enter the url for another project</p>
-    </div>
-
-    <div class = "container">
-    
-      <form  action="/output" method="GET">
-        <div class="form-group">
-          <label for="ID">Enter new project URL:</label>
-          <input type="text" id="ID" name='ID' placeholder="e.g. ">
+          
+        <div class="panel panel-default">          
+          <div class="panel-heading" style = "max-height: 40px;">
+                <h4> Similar project
+                </h4> 
+            </div>
+          <div class="panel-body" >
+                <img alt= "Similar Project" style="float:left;width:140px;" src= "{{simP['imgURL']}}">
+                 <p class = "follow" style = "font-size:18px;"><a href = "{{simP['url']}}"><i>{{simP["projectTitle"] }}</i></a>
+                </p>
+                <p>Complexity = <strong>{{simP["compEst"]}}</strong></p>
+            </div>
         </div>
-        <div>
-          <button type="submit" class="btn btn-default btn-lg">GO!</button>
+        <div class="panel panel-default">
+          <div class="panel-heading" style = "max-height: 40px;">
+                <h4> Challenging project
+                </h4> 
+            </div>
+          <div class="panel-body" >
+                <img alt=" <<Found no image!>> " style="float:left;width:140px;" src= "{{hardP['imgURL']}}">
+                 <p class = "follow" style = "font-size:18px;"><a href = "{{hardP['url']}}"><i>{{hardP["projectTitle"] }}</i></a>
+                </p>
+                <p>Complexity = <strong>{{hardP["compEst"]}}</strong></p>
+            </div>
         </div>
-      </form>
-    </div>
+      </div> 
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="static/js/bootstrap.min.js"></script>
 
-  </div> <!-- /.container-->
+    </div><!-- /.row-->
+  </section><!-- /.container-->
+ 
+    
     
     <!-- Bootstrap core JavaScript
     ================================================== -->
