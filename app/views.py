@@ -48,36 +48,34 @@ def diy_output():
     #just select the city from the world_innodb that the user inputs
         cur.execute("SELECT  title, complexEstimate, id, imgURL FROM techFeatures WHERE url ='%s';" %pID )
         query_results = cur.fetchall()
-
-    chosen = []
-    for result in query_results:
-        chosen.append(dict(title = result[0], complexity = result[1], rowNum = result[2], imgURL = result[3]) )
-  
-    if not chosen:
-        return render_template("404.html", ID = "Invalid project, not all projects have the proper format unfortunately. :(")
-    
-    # get the indices
-    #indices15 = getSimProjects(chosen[0]["rowNum"]):
-    if 'bmatch' not in locals():
-        with open("../Data/matchlist.pickle", 'rb') as f:
-            bestmatch = pkl.load(f)
-    indices15 = bestmatch[chosen[0]["rowNum"]]
+        chosen = []
+        for result in query_results:
+            chosen.append(dict(title = result[0], complexity = result[1], rowNum = result[2], imgURL = result[3]) )
+        if not chosen:
+            db.close()
+            return render_template("404.html", ID = "Invalid project, not all projects have the proper format unfortunately. :(")
+        
+        # Now get from the "similars" table the 15 closest from our chosen row
+        cur.execute("SELECT * FROM similars WHERE X = %s;", chosen[0]["rowNum"])  
+        indices15 = cur.fetchall()
+        
+        indices15 = [el +1 for el in indices15[0]]  # NEED TO GIVE techFeatures id+1 to get proper project      
+        #for ind in indices15[0][1:]:
+            
+        format_string = ','.join(['%s'] * len(indices15))
+        cur.execute("SELECT  title, complexEstimate, url, imgURL FROM techFeatures WHERE id IN (%s) ORDER BY FIELD (id,%s);" %(format_string,format_string), tuple(indices15+indices15) )
+        query_results = cur.fetchall()
     
     closests = []
-    with db:
-        cur = db.cursor()
-        # ignore first
-        for ind in indices15[1:]:
-            cur.execute("SELECT  title, complexEstimate, url, imgURL FROM techFeatures WHERE id ='%d';" %(ind+1) )
-            query_results = cur.fetchall()
-            for result in query_results:
-                closests.append(dict(projectTitle = result[0], 
-                                     compEst = result[1], 
-                                     url = "http://www.instructables.com" + str(result[2]),
-                                     imgURL = "http://cdn.instructables.com" + str(result[3]))
-                               )
+    for result in query_results:
+        closests.append(dict(projectTitle = result[0], 
+                             compEst = result[1], 
+                             url = "http://www.instructables.com" + str(result[2]),
+                             imgURL = "http://cdn.instructables.com" + str(result[3]) 
+                             )
+                        )
+    
         
- #### add index + 1 from python to "id" of the SQL
     cur_compl = chosen[0]["complexity"]
     simplest = cur_compl #this is the level of simplest
     hardest = cur_compl
