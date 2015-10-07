@@ -5,7 +5,6 @@ Created on Tue Sep 15 11:52:02 2015
 @author: Michel_home
 """
 import re
-import pickle as pkl
 
 def urlExtract(url_string = ""):
   pat = re.compile("\/id\/([\w-]+)\/")
@@ -13,13 +12,5 @@ def urlExtract(url_string = ""):
   if url:
       return url[0]
   else:
-      return "Error 404: Page not found! The url provided is not of proper format"
-
-
-def getSimProjects(chosen):
-    if 'bmatch' not in locals():
-        with open("../Data/matchlist.pickle", 'rb') as f:
-            bmatch = pkl.load(f)
-    return bmatch.iloc[chosen]
-
+      return ""
 

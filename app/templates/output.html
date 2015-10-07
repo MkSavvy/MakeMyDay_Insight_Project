@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Make My Day">
+    <meta name="author" content="Michel Savard">
     <link rel="icon" href="../../favicon.ico">
 
     <title>Make my Day</title>
@@ -24,6 +24,11 @@
     <!-- Squad theme CSS -->
     <link href="http://www.prepbootstrap.com/Content/css/squad/style.css" rel="stylesheet">
 	<link href="http://www.prepbootstrap.com/Content/css/squad/default.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="../static/css/MS_styles.css" rel="stylesheet">
+    
+    
       <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
@@ -51,9 +56,9 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
                   <ul class="nav navbar-nav">
-                    <li class="active"><a href=/">Home</a></li>
-                    <li><a href="#about">About</a></li>
-            		<li><a href="#service">Slides</a></li>      
+                    <li class="active"><a href="/">Home</a></li>
+                    <li><a href="/MakerStory">MakerStory</a></li>
+            		<li><a href="/slides">Slides</a></li>       
                   </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -63,22 +68,35 @@
    
 
 
- <section id="intro" class="intro"  style="background:url('/static/img/bck50.png') background-size:cover no-repeat top center;">
+ <section id="intro" class="intro"  style="background:url('/static/img/background.jpg') background-size:cover no-repeat top center;">
     <div class = "row" style = "margin-left: 25px; padding-left: 15px;">
       <div class = "col-md-5">
         <div class="panel panel-default">
-          <div class = "panel-heading" style = "max-height: 50px;margins:0 auto">
+          <div class = "panel-heading" style = "max-height: 40px;margins:0 auto">
             <h4> selected project</h4>
           </div>
           <div class = "panel-body">
-            <img alt="The project you chose" style="float:left;width:160px;height:160px;" src= "http://cdn.instructables.com{{chosen['imgURL']}}">
-             <p class = "lead"><a href="http://www.instructables.com{{pID}}?ALLSTEPS"><i>{{chosen["title"]}}</i></a>
-            </p>
-            <p>Complexity <strong>{{chosen["complexity"]}}</strong></p>
-            
+             <div class="media">
+              <div class="media-left" >
+               <img class="media-object" style="width:170px;" src="http://cdn.instructables.com{{chosen['imgURL']}}" alt="The project you chose">
+             </div>
+            <div class="media-body">
+              <a href="http://www.instructables.com{{pID}}?ALLSTEPS">
+              <h5 class="media-heading">{{chosen["title"]}}</h5>
+    		  </a>
+    		  
+    		  <p class = "text-center"> Complexity 
+    		  <div class="progress">
+  				<div class="progress-bar" role="progressbar" aria-valuenow="{{chosen['complexity']}}" aria-valuemin="1.0" aria-valuemax="5.0" style = "width: {{chosen['percentage']}}%;">
+    			{{chosen["complexity"]}}/5
+			    </div>
+			    
+			  </div>
+    		  </p>
+            </div>
+        </div>
           </div>
         </div>
-        
         <div class="panel panel-default">
           <div class = "panel-heading" style = "max-height: 40px;">
             <h4> Try another project </h4>
@@ -104,11 +122,25 @@
                 </h4> 
             </div>
           <div class="panel-body" >
-                <img alt=" <<No Image Found!>>" style="float:left;width:140px;" src= "{{simpleP['imgURL']}}">
-                 <p class = "follow" style = "font-size:18px;"><a href = "{{simpleP['url']}}"><i><b>{{simpleP["projectTitle"] }}</b></i></a>
-                </p>
-                <p>Complexity = <strong>{{simpleP["compEst"]}}</strong></p>
+            <div class="media">
+              <div class="media-left" >
+               <img class="media-object" style="height:150px;" src="{{simpleP['imgURL']}}" alt=" <<No Image Found!>>">
+              </div>
+              <div class="media-body">
+                <a href="{{simpleP['url']}}">
+                <h5 class="media-heading">{{simpleP["projectTitle"]}}</h5>
+    		    </a>
+    		    <p class = "text-center">Complexity 
+    		     <div class="progress">
+  				  <div class="progress-bar" role="progressbar" aria-valuenow="{{simpleP['compEst']}}" aria-valuemin="1.0" aria-valuemax="5.0" style = "width:{{simpleP['percentage']}}%;">
+    			    {{simpleP["compEst"]}}/5
+			      </div>
+			    </p>
+                </div>
+              </div>
+              
             </div>
+          </div>
         </div>
           
         <div class="panel panel-default">          
@@ -117,25 +149,50 @@
                 </h4> 
             </div>
           <div class="panel-body" >
-                <img alt= " <<No Image Found!>>" style="float:left;width:140px;" src= "{{simP['imgURL']}}">
-                 <p class = "follow" style = "font-size:18px;"><a href = "{{simP['url']}}"><i><b>{{simP["projectTitle"] }}</b></i></a>
-                </p>
-                <p>Complexity = <strong>{{simP["compEst"]}}</strong></p>
+            <div class="media">
+              <div class="media-left" >
+               <img class="media-object" style="width:170px;" src="{{simP['imgURL']}}" alt=" <<No Image Found!>>">
+              </div>
+              <div class="media-body">
+                <a href="{{simP['url']}}">
+                <h5 class="media-heading">{{simP["projectTitle"] }}</h5>
+    		    </a>
+    		    <p class = "text-center">Complexity </p>
+    		    <div class="progress">
+  				  <div class="progress-bar" role="progressbar" aria-valuenow="{{simP['compEst']}}" aria-valuemin="1.0" aria-valuemax="5.0" style = "width:{{simP['percentage']}}%;">
+    			    {{simP["compEst"]}}/5
+			      </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+        
         <div class="panel panel-default">
           <div class="panel-heading" style = "max-height: 40px;">
                 <h4> Challenging project
                 </h4> 
             </div>
           <div class="panel-body" >
-                <img alt=" <<No Image Found!>> " style="float:left;width:140px;" src= "{{hardP['imgURL']}}">
-                 <p class = "follow" style = "font-size:18px;"><a href = "{{hardP['url']}}"><i><b>{{hardP["projectTitle"] }}</b></i></a>
-                </p>
-                <p>Complexity = <strong>{{hardP["compEst"]}}</strong></p>
+            <div class="media">
+              <div class="media-left" >
+               <img class="media-object" style="width:170px;" src="{{hardP['imgURL']}}" alt=" <<No Image Found!>>">
+              </div>
+              <div class="media-body">
+                <a href="{{hardP['url']}}">
+                <h5 class="media-heading">{{hardP["projectTitle"]}}</h5>
+    		    </a>
+    		    <p class = "text-center">Complexity
+    		    <div class="progress">
+  				  <div class="progress-bar" role="progressbar" aria-valuenow="{{hardP['compEst']}}" aria-valuemin="1" aria-valuemax="5" style="width:{{hardP['percentage']}}%;">
+    			    {{hardP["compEst"]}}/5
+			      </div></p>
+              </div>
+            </div>      
             </div>
         </div>
       </div> 
+      
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="static/js/bootstrap.min.js"></script>
 

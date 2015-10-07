@@ -1,0 +1,31 @@
+
+.btn-default:hover, .btn-default:focus {
+    border: 1px solid #92B2FC;
+    outline: 0;
+    border-radius: 10px;
+    color: #000;
+    background-color: #92B2FC;
+}
+
+.btn-default {
+    background-color: rgba(255, 255, 255, 0.74);
+    border-radius: 10px;
+}
+
+.panel {
+	background-color: rgba(255, 255, 255, 0.92);
+}
+
+.progress {
+	background-color: #DDDDDB;
+}
+.progress-bar {
+    color: #E0FCFF;
+    font-size: 15px;
+    font-weight: 500;
+    background-color: #E30606;
+}
+
+.text-center {
+	margin-bottom: 2px;
+}

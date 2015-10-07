@@ -34,15 +34,27 @@ def diy_input():
 #@app.route('/output')
 #def cities_output():
 #    return render_template("output.html")
+@app.route('/MakerStory')
+def diy_MakerStory():
+    return render_template('maker_story.html')
+    
+
+@app.route('/slides')
+def diy_slides():
+    return render_template('slides.html')
+    
 
 @app.route('/output')
 def diy_output():
     #pull 'ID' from input field and store it
     projectID = request.args.get('ID')
-    db = mdb.connect(user="root", host="localhost", db="instructables",  charset='utf8', unix_socket='/tmp/mysql.sock', port='3307')
-   
     pID = "/id/" + urlExtract(projectID) + "/"
     print "the current url is: " + pID
+    
+    if pID == r"/id//":
+        return render_template("404.html", message = "could not extract a project page")
+    db = mdb.connect(user="root", host="localhost", db="instructables",  charset='utf8', unix_socket='/tmp/mysql.sock', port='3307')
+    
     with db:
         cur = db.cursor()
     #just select the city from the world_innodb that the user inputs
@@ -106,6 +118,11 @@ def diy_output():
     simP["compEst"] = round( simP["compEst"], 1 )
     hardP["compEst"] = round( hardP["compEst"], 1 )
     
+    chosen[0]["percentage"] = round(chosen[0]["complexity"]*20, 0)
+    simpleP["percentage"] = round( simpleP["compEst"]*20, 0)
+    simP["percentage"] = round( simP["compEst"]*20, 0)
+    hardP["percentage"] = round( hardP["compEst"]*20, 0)
+    
     
     return render_template("output.html", chosen = chosen[0], pID = pID, simpleP = simpleP, simP = simP, hardP = hardP)
 
@@ -121,7 +138,7 @@ def page_not_found(e):
     return render_template('404.html'), 404
 
 @app.errorhandler(500)
-def page_not_found(e):
+def page_error(e):
     return render_template('500.html'), 500
   
   
